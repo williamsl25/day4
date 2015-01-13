@@ -1,105 +1,117 @@
-class Horses
-	attr_accessor:name
-	attr_accessor:age
-	attr_accessor:color
-	attr_accessor:position
-	@@list_of_horses = [ ]
+class Horse
+	attr_accessor :name
+	attr_accessor :location
 
-	def initialize
-		self.name = "horsename"
-		# self.age = "age"
-		# self.color = "color"
-		self.position = 0
-		Horses.list_of_horses.push(self)
+	def initialize	#an instance of the method
+		self.name = "default"	#will display the current variable
+		self.location = 0
 	end
 #  position indicates than all the horses will start at 0
-	def display_info
-		"#{self.name} ->"
 
+	def move
+		self.location += rand(1..6)
+# keeps track of horses location
+# move will make the example horse move forward a random number 1-10 characters
 	end
 
-	def self.display_all_horses
+	
+	def display_lane
+		puts "{#{self.location} #{self.name}"
+		print '*'*self.location	#will make symbol instead of a number to show
+								    # movement
 	end
-# displays all of the horse information - name, age, color, position 
-
-	def self.list_of_horses
-		# p self
-		@@list_of_horses
-	end
-# makes a list of all of the horses
-	def move_forward
-		@@list_of_horses.insert(0, " " * rand(1..3) )
-	end
-# move_forward will make the example horse move forward a random number 1-10 characters
+	
 end
 
-class Track
+class Board
 
-	attr_accessor:horses
-	attr_accessor:name
+	attr_accessor :horses
+	attr_accessor :length
 
 	def initialize
 		self.horses = [ ]
 	end
 # this creates the track for the horses
-end 
-
-ramone = Horses.new
-ramone.name = "R"
-# ramone.age = "is 3 years old"
-# ramone.color = "He is black"
-
-sally = Horses.new
-sally.name = "S"
-# sally.age = "is 3 years old"
-# sally.color = "She is white"
-
-gracie = Horses.new
-gracie.name = "G"
-# gracie.age = "is 9 years old"
-# gracie.color = "She is brown"
-
-maizie = Horses.new
-maizie.name = "M"
-# maizie.age = "is 2 years old"
-# maizie.color = "She is brown"
-# you indicate all of the informaion about the horses in the horse class
-
-kentucky_derby = Track.new
-kentucky_derby.name = "Kentucky derby"
-kentucky_derby.horses.push(ramone)
-kentucky_derby.horses.push(sally)
-kentucky_derby.horses.push(gracie)
-kentucky_derby.horses.push(maizie)
-
-p kentucky_derby.horses[0].display_info
-p kentucky_derby.horses[1].display_info
-p kentucky_derby.horses[2].display_info
-p kentucky_derby.horses[3].display_info
-
-	
-#puts "Let's race horses! Pick a horse to race: 1, 2, 3, or 4"
-	# horsename = gets.chomp
-puts "To move the horses, press return repeatedly"
-
-while gets.chomp == ""
-system("clear")	
-# system("clear") will refresh the screen
-	kentucky_derby.horses.each do |horse|
-			if horse.display_info.length <= 80
-				horse.move_forward
-				puts horse.display_info
-			else 
-				puts "You are the Winner!"
-			break
-		# break indicated that the loop will terminate'
-			end
+	def display_horses
+		horses.each do |horse|
+			puts horse.display_lane
+		end
+# 
 	end
+
+	def display_board
+		puts '-'*79
+		self.display_horses
+		puts '-'*65
+	end
+
+	def move_all_horses
+		horses.each do |horse|
+			horse.move
+		end
+	end
+	def winner
+		self.length = 65
+	end
+
 end
 
+# list all of the indiv horse info
+horse1 = Horse.new
+horse1.name = "Ramone"
+# horse1.age = "is 3 years old"
+# horse1.color = "He is black"
+
+horse2 = Horse.new
+horse2.name = "Sally"
+# horse2.age = "is 3 years old"
+# horse2.color = "She is white"
+
+horse3 = Horse.new
+horse3.name = "Gracie"
+# horse3.age = "is 9 years old"
+# horse3.color = "She is brown"
+
+horse4 = Horse.new
+horse4.name = "Maizie"
+# horse4.age = "is 2 years old"
+# horse4.color = "She is brown"
+# you indicate all of the informaion about the horses in the horse class
 
 
-	
+kentucky_derby = Board.new
+kentucky_derby.horses.push(horse1,horse2,horse3,horse4)
+# the first horses. indicates the horses attribute created in the Board class
+# then you push(each of the individual horses that are in the horse class)
+# this allows you to control the horses on the track.  If you don't push 
+# the indiv horses, then you won't have horses on the track
+puts "Let's start the race!"
+
+game_on = true
+
+while game_on
+	system("clear")   #will clear out screen 
+	kentucky_derby.display_board
+	gets.chomp  
+	kentucky_derby.move_all_horses
+	kentucky_derby.display_board
+	kentucky_derby.winner
+	if horse1.location > 65
+		game_on = false
+		puts "#{horse1.name} won!"
+	elsif horse2.location > 65
+		game_on = false
+		puts "#{horse2.name} won!" 
+	elsif horse3.location > 65
+		game_on = false
+		puts "#{horse3.name} won!" 
+	elsif horse4.location > 65
+		game_on = false
+		puts "#{horse4.name} won!" 	
+	end
+		
+end
+
 
 
 # figure out how to move ramone a random # and also how to move all other horses
